@@ -1,7 +1,6 @@
 package cachet.plugins.health
 
 import android.content.Context
-import android.os.Handler
 import android.util.Log
 import androidx.health.connect.client.HealthConnectClient
 import androidx.health.connect.client.changes.DeletionChange
@@ -10,8 +9,11 @@ import androidx.health.connect.client.records.*
 import androidx.health.connect.client.request.ChangesTokenRequest
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel.Result
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlin.reflect.KClass
 
 /**
@@ -22,7 +24,8 @@ class HealthDataChanges(
     private val healthConnectClient: HealthConnectClient,
     private val scope: CoroutineScope,
     private val context: Context,
-    private val dataConverter: HealthDataConverter
+    private val dataConverter: HealthDataConverter,
+    private val mainDispatcher: CoroutineDispatcher = Dispatchers.Main
 ) {
     /**
      * Creates a changes token for the requested record types.
@@ -60,11 +63,11 @@ class HealthDataChanges(
                 val token = healthConnectClient.getChangesToken(
                     ChangesTokenRequest(recordTypes = recordTypes)
                 )
-                Handler(context.mainLooper).run { result.success(token) }
+                withContext(mainDispatcher) { result.success(token) }
             } catch (e: Exception) {
                 Log.e("FLUTTER_HEALTH::ERROR", "Error fetching changes token: ${e.message}")
                 Log.e("FLUTTER_HEALTH::ERROR", e.stackTraceToString())
-                result.success(null)
+                withContext(mainDispatcher) { result.success(null) }
             }
         }
     }
@@ -139,11 +142,11 @@ class HealthDataChanges(
                     "hasMore" to response.hasMore,
                     "changesTokenExpired" to response.changesTokenExpired,
                 )
-                Handler(context.mainLooper).run { result.success(payload) }
+                withContext(mainDispatcher) { result.success(payload) }
             } catch (e: Exception) {
                 Log.e("FLUTTER_HEALTH::ERROR", "Error fetching changes: ${e.message}")
                 Log.e("FLUTTER_HEALTH::ERROR", e.stackTraceToString())
-                result.success(null)
+                withContext(mainDispatcher) { result.success(null) }
             }
         }
     }

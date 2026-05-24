@@ -241,7 +241,7 @@ class HealthPlugin(private var channel: MethodChannel? = null) :
      */
     private fun initializeHelpers() {
         dataConverter = HealthDataConverter()
-        dataReader = HealthDataReader(healthConnectClient, scope, context!!, dataConverter)
+        dataReader = HealthDataReader(healthConnectClient, scope, dataConverter)
         dataWriter = HealthDataWriter(healthConnectClient, scope)
         dataOperations =
                 HealthDataOperations(
