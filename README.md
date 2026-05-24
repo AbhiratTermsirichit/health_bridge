@@ -1,8 +1,33 @@
-# Health
+# health_bridge
 
-Enables reading and writing health data from/to [Apple Health](https://www.apple.com/health/) and [Google Health Connect](https://health.google/health-connect-android/).
+A maintained fork of [`health`](https://pub.dev/packages/health) (carp-dk/carp-health-flutter v13.3.1). The upstream package has been inactive since early 2026 with 18 unmerged PRs and multiple production-breaking bugs. This fork applies those fixes and adds new features.
 
-> **NOTE:** Google has deprecated the Google Fit API. According to the [documentation](https://developers.google.com/fit/android), as of **May 1st 2024** developers cannot sign up for using the API. As such, this package has removed support for Google Fit as of version 11.0.0 and users are urged to upgrade as soon as possible.
+## Changes from upstream
+
+- Removed `carp_serializable` dependency (inlined)
+- Fixed iOS SIGABRT crash on TOTAL_CALORIES_BURNED
+- Fixed Android ANRs (coroutine dispatchers, parallel workout queries)
+- Fixed silent empty workout list when missing optional permissions
+- Fixed `workoutSummary` always null on Android (camelCase/snake_case mismatch)
+- Fixed outdoor run mapped to RUNNING_TREADMILL on iOS
+- Deduplicated workout metrics to prevent double-counting from multiple sources
+- `writeHealthData` / `writeWorkoutData` now return `String?` UUID instead of `bool`
+- Added VO2 Max, Cycling Power, Cycling Cadence, Mindfulness (Android) data types
+- Added WorkoutMetadata support for iOS (brand name, indoor/outdoor, coached, etc.)
+- AGP 9.x compatibility
+- Swift Package Manager support (CocoaPods still works)
+
+## Installation
+
+```yaml
+dependencies:
+  health_bridge:
+    git:
+      url: https://github.com/ytsni/health_bridge.git
+      ref: main
+```
+
+---
 
 The plugin supports:
 
