@@ -5,17 +5,28 @@ Forked from [carp-dk/carp-health-flutter](https://github.com/carp-dk/carp-health
 ### Breaking
 
 - Package renamed from `health` to `health_bridge`
-- Removed `carp_serializable` dependency (inlined minimal polymorphic serialization)
+- Removed `carp_serializable` dependency
+- `writeHealthData` / `writeWorkoutData` return `String?` UUID instead of `bool`
 
-### TODO (from upstream PRs/issues)
+### Bug fixes
 
-- [ ] Cherry-pick #484: Fix iOS SIGABRT crash (TOTAL_CALORIES_BURNED)
-- [ ] Cherry-pick #461: Fix silent empty workout list + unnecessary permissions
-- [ ] Cherry-pick #458: Fix Android ANRs (coroutine dispatch)
-- [ ] Cherry-pick #491: AGP 9.x compatibility
-- [ ] Cherry-pick #488: SPM support
-- [ ] Fix #492: workoutSummary camelCase/snake_case mismatch on Android
-- [ ] Cherry-pick #448: writeWorkoutData returns UUID (breaking)
+- Fixed iOS SIGABRT crash on TOTAL_CALORIES_BURNED
+- Fixed Android ANRs (coroutine dispatchers, parallel workout queries)
+- Fixed silent empty workout list when missing optional permissions
+- Fixed Health Connect rate limit crash
+- Fixed `workoutSummary` always null on Android (camelCase/snake_case mismatch)
+- Fixed outdoor run mapped to RUNNING_TREADMILL on iOS
+- Fixed BIKING_STATIONARY mapping missing for Health Connect
+- Deduplicated workout distance/energy/steps to prevent double-counting
+
+### New features
+
+- VO2 Max data type (iOS + Android)
+- Cycling Power and Cycling Cadence data types (iOS 17+ / Android)
+- Mindfulness data type on Android
+- WorkoutMetadata support for iOS workouts
+- Swift Package Manager support
+- AGP 9.x compatibility
 
 ## 13.3.1
 
