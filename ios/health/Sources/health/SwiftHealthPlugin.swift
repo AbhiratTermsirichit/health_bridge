@@ -598,7 +598,6 @@ public class SwiftHealthPlugin: NSObject, FlutterPlugin {
         workoutActivityTypeMap["FLEXIBILITY"] = .flexibility
         workoutActivityTypeMap["WALKING"] = .walking
         workoutActivityTypeMap["RUNNING"] = .running
-        workoutActivityTypeMap["RUNNING_TREADMILL"] = .running // Supported due to combining with Android naming
         workoutActivityTypeMap["WHEELCHAIR_WALK_PACE"] = .wheelchairWalkPace
         workoutActivityTypeMap["WHEELCHAIR_RUN_PACE"] = .wheelchairRunPace
         workoutActivityTypeMap["BIKING"] = .cycling

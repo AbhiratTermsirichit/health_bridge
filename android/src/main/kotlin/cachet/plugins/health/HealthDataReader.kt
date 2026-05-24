@@ -636,7 +636,10 @@ class HealthDataReader(
                             ),
                         ),
                     )
-                    response.records.sumOf { it.distance.inMeters }
+                    // Deduplicate: group by time range, keep max per group, then sum
+                    response.records
+                        .groupBy { Pair(it.startTime, it.endTime) }
+                        .values.sumOf { group -> group.maxOf { it.distance.inMeters } }
                 } catch (e: Exception) {
                     Log.w(
                         "FLUTTER_HEALTH::WARNING",
@@ -657,7 +660,9 @@ class HealthDataReader(
                             ),
                         ),
                     )
-                    response.records.sumOf { it.energy.inKilocalories }
+                    response.records
+                        .groupBy { Pair(it.startTime, it.endTime) }
+                        .values.sumOf { group -> group.maxOf { it.energy.inKilocalories } }
                 } catch (e: Exception) {
                     Log.w(
                         "FLUTTER_HEALTH::WARNING",
@@ -678,7 +683,9 @@ class HealthDataReader(
                             ),
                         ),
                     )
-                    response.records.sumOf { it.count.toDouble() }
+                    response.records
+                        .groupBy { Pair(it.startTime, it.endTime) }
+                        .values.sumOf { group -> group.maxOf { it.count.toDouble() } }
                 } catch (e: Exception) {
                     Log.w(
                         "FLUTTER_HEALTH::WARNING",

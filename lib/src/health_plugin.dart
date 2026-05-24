@@ -1520,6 +1520,7 @@ class Health {
     int? totalDistance,
     HealthDataUnit totalDistanceUnit = HealthDataUnit.METER,
     String? title,
+    WorkoutMetadata? metadata,
     RecordingMethod recordingMethod = RecordingMethod.automatic,
   }) async {
     await _checkIfHealthConnectAvailableOnAndroid();
@@ -1544,6 +1545,9 @@ class Health {
       'title': title,
       'recordingMethod': recordingMethod.toInt(),
     };
+    if (metadata != null) {
+      args['metadata'] = metadata.toJson();
+    }
     final result = await _channel.invokeMethod('writeWorkoutData', args);
     if (result == null || result == false) return null;
     return '$result';
