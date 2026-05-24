@@ -1,11 +1,11 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:health/health.dart';
-import 'package:health_example/util.dart';
+import 'package:health_bridge/health.dart';
+import 'package:health_bridge_example/util.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:carp_serializable/carp_serializable.dart';
 
 class _ChangesSummary {
   final int beforeCount;
@@ -1048,7 +1048,7 @@ class HealthAppState extends State<HealthApp> {
 
     debugPrint("Interval data points: ");
     for (var data in healthDataResponse) {
-      debugPrint(toJsonString(data));
+      debugPrint(jsonEncode(data.toJson()));
     }
     healthDataResponse.sort((a, b) => b.dateTo.compareTo(a.dateTo));
 
@@ -1060,7 +1060,7 @@ class HealthAppState extends State<HealthApp> {
     );
 
     for (var data in _healthDataList) {
-      debugPrint(toJsonString(data));
+      debugPrint(jsonEncode(data.toJson()));
     }
 
     setState(() {

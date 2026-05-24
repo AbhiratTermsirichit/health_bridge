@@ -1,4 +1,4 @@
-import 'package:health/health.dart';
+import 'package:health_bridge/health.dart';
 
 /// Data types available on iOS via Apple Health.
 const List<HealthDataType> dataTypesIOS = [

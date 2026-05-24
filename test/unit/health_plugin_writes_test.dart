@@ -1,7 +1,7 @@
 import 'dart:io' show Platform;
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:health/health.dart';
+import 'package:health_bridge/health.dart';
 
 import '../support/fixtures.dart';
 import '../support/health_test_context.dart';

@@ -1,7 +1,7 @@
 // Copy this file into test/unit and rename to *_test.dart to activate.
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:health/health.dart';
+import 'package:health_bridge/health.dart';
 
 import '../support/fixtures.dart';
 import '../support/health_test_context.dart';

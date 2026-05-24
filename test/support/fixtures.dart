@@ -1,4 +1,4 @@
-import 'package:health/health.dart';
+import 'package:health_bridge/health.dart';
 
 class HealthFixtures {
   static final DateTime start = DateTime(2025, 1, 1, 10, 0);

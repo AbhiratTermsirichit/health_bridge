@@ -1,3 +1,22 @@
+## 1.0.0
+
+Forked from [carp-dk/carp-health-flutter](https://github.com/carp-dk/carp-health-flutter) v13.3.1.
+
+### Breaking
+
+- Package renamed from `health` to `health_bridge`
+- Removed `carp_serializable` dependency (inlined minimal polymorphic serialization)
+
+### TODO (from upstream PRs/issues)
+
+- [ ] Cherry-pick #484: Fix iOS SIGABRT crash (TOTAL_CALORIES_BURNED)
+- [ ] Cherry-pick #461: Fix silent empty workout list + unnecessary permissions
+- [ ] Cherry-pick #458: Fix Android ANRs (coroutine dispatch)
+- [ ] Cherry-pick #491: AGP 9.x compatibility
+- [ ] Cherry-pick #488: SPM support
+- [ ] Fix #492: workoutSummary camelCase/snake_case mismatch on Android
+- [ ] Cherry-pick #448: writeWorkoutData returns UUID (breaking)
+
 ## 13.3.1
 
 * iOS: Fix issues with app crashing on iOS 15

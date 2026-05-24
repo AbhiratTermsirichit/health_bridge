@@ -1,7 +1,8 @@
-name: health
-description: Wrapper for Apple's HealthKit on iOS and Google's Health Connect on Android.
-version: 13.3.1
-homepage: https://github.com/carp-dk/carp-health-flutter
+name: health_bridge
+description: Read and write health data from Apple HealthKit and Google Health Connect.
+version: 1.0.0
+repository: https://github.com/ytsni/health_bridge
+issue_tracker: https://github.com/ytsni/health_bridge/issues
 
 environment:
   sdk: ">=3.8.0 <4.0.0"
@@ -13,7 +14,6 @@ dependencies:
   intl: '>=0.18.0 <0.21.0'
   device_info_plus: '^12.1.0'
   json_annotation: ^4.9.0
-  carp_serializable: ^2.0.1 # polymorphic json serialization
 
 dev_dependencies:
   flutter_test:
@@ -21,9 +21,6 @@ dev_dependencies:
   integration_test:
     sdk: flutter
   flutter_lints: any
-
-  # Using carp_serializable & json_serializable to auto generate json code (.g files) with this command:
-  #   dart run build_runner build --delete-conflicting-outputs
   build_runner: any
   json_serializable: any
   mocktail: ^1.0.4

@@ -1,5 +1,5 @@
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:health/health.dart';
+import 'package:health_bridge/health.dart';
 
 import 'method_channel_harness.dart';
 import 'stub_device_info.dart';
