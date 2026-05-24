@@ -17,16 +17,6 @@ A maintained fork of [`health`](https://pub.dev/packages/health) (carp-dk/carp-h
 - AGP 9.x compatibility
 - Swift Package Manager support (CocoaPods still works)
 
-## Installation
-
-```yaml
-dependencies:
-  health_bridge:
-    git:
-      url: https://github.com/ytsni/health_bridge.git
-      ref: main
-```
-
 ---
 
 The plugin supports:
