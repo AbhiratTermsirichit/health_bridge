@@ -99,6 +99,8 @@ enum HealthDataType {
   NUTRITION,
   UV_INDEX,
   VO2_MAX,
+  POWER,
+  CYCLING_CADENCE,
   // HealthKit Characteristics
   GENDER,
   BIRTH_DATE,
@@ -227,6 +229,8 @@ const List<HealthDataType> dataTypeKeysIOS = [
   HealthDataType.UV_INDEX,
   HealthDataType.SLEEP_WRIST_TEMPERATURE,
   HealthDataType.VO2_MAX,
+  HealthDataType.POWER,
+  HealthDataType.CYCLING_CADENCE,
 ];
 
 /// List of data types available on Android
@@ -271,6 +275,8 @@ const List<HealthDataType> dataTypeKeysAndroid = [
   HealthDataType.ACTIVITY_INTENSITY,
   HealthDataType.SKIN_TEMPERATURE,
   HealthDataType.VO2_MAX,
+  HealthDataType.POWER,
+  HealthDataType.CYCLING_CADENCE,
 ];
 
 /// Maps a [HealthDataType] to a [HealthDataUnit].
@@ -397,6 +403,8 @@ const Map<HealthDataType, HealthDataUnit> dataTypeToUnit = {
   HealthDataType.ACTIVITY_INTENSITY: HealthDataUnit.MINUTE,
   HealthDataType.SKIN_TEMPERATURE: HealthDataUnit.DEGREE_CELSIUS,
   HealthDataType.VO2_MAX: HealthDataUnit.MILLILITER_PER_KILOGRAM_PER_MINUTE,
+  HealthDataType.POWER: HealthDataUnit.WATT,
+  HealthDataType.CYCLING_CADENCE: HealthDataUnit.REVOLUTION_PER_MINUTE,
 };
 
 // const PlatformTypeJsonValue = {
@@ -485,6 +493,8 @@ enum HealthDataUnit {
   MILLIMOLES_PER_LITER,
   METER_PER_SECOND,
   MILLILITER_PER_KILOGRAM_PER_MINUTE,
+  WATT,
+  REVOLUTION_PER_MINUTE,
   UNKNOWN_UNIT,
   NO_UNIT,
 }
