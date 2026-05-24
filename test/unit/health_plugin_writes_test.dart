@@ -58,16 +58,16 @@ void main() {
     });
 
     test('aligns values for sleep types and uses default unit', () async {
-      ctx.channel.when('writeData', true);
+      ctx.channel.when('writeData', 'mock-uuid-123');
 
-      final success = await ctx.health.writeHealthData(
+      final result = await ctx.health.writeHealthData(
         value: 99,
         type: HealthDataType.SLEEP_IN_BED,
         startTime: HealthFixtures.start,
         endTime: HealthFixtures.end,
       );
 
-      expect(success, isTrue);
+      expect(result, isNotNull);
       final call = ctx.channel.lastCallFor('writeData');
       expect(call, isNotNull);
       final args = Map<String, dynamic>.from(call!.arguments as Map);
@@ -76,9 +76,9 @@ void main() {
     });
 
     test('forwards data unit and recording method', () async {
-      ctx.channel.when('writeData', true);
+      ctx.channel.when('writeData', 'mock-uuid-456');
 
-      final success = await ctx.health.writeHealthData(
+      final result = await ctx.health.writeHealthData(
         value: 80,
         type: HealthDataType.HEART_RATE,
         unit: HealthDataUnit.BEATS_PER_MINUTE,
@@ -87,7 +87,7 @@ void main() {
         recordingMethod: RecordingMethod.manual,
       );
 
-      expect(success, isTrue);
+      expect(result, isNotNull);
       final call = ctx.channel.lastCallFor('writeData');
       expect(call, isNotNull);
       final args = Map<String, dynamic>.from(call!.arguments as Map);

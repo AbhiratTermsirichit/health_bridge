@@ -526,7 +526,7 @@ class Health {
   ///
   /// Values for Sleep and Headache are ignored and will be automatically assigned
   /// the default value.
-  Future<bool> writeHealthData({
+  Future<String?> writeHealthData({
     required double value,
     HealthDataUnit? unit,
     required HealthDataType type,
@@ -595,8 +595,9 @@ class Health {
       'clientRecordId': clientRecordId,
       'clientRecordVersion': clientRecordVersion,
     };
-    bool? success = await _channel.invokeMethod('writeData', args);
-    return success ?? false;
+    final result = await _channel.invokeMethod('writeData', args);
+    if (result == null || result == false) return null;
+    return '$result';
   }
 
   /// Writes an [ActivityIntensityRecord] to Google Health Connect.
@@ -783,13 +784,14 @@ class Health {
     bool? success;
 
     if (Platform.isIOS) {
-      success = await writeHealthData(
+      final uuid = await writeHealthData(
         value: saturation,
         type: HealthDataType.BLOOD_OXYGEN,
         startTime: startTime,
         endTime: endTime,
         recordingMethod: recordingMethod,
       );
+      success = uuid != null;
     } else if (Platform.isAndroid) {
       Map<String, dynamic> args = {
         'value': saturation,
@@ -1509,7 +1511,7 @@ class Health {
   ///  - [title] The title of the workout.
   ///    *ONLY FOR HEALTH CONNECT* Default value is the [activityType], e.g. "STRENGTH_TRAINING".
   ///  - [recordingMethod] The recording method of the data point, automatic by default (on iOS this can only be automatic or manual).
-  Future<bool> writeWorkoutData({
+  Future<String?> writeWorkoutData({
     required HealthWorkoutActivityType activityType,
     required DateTime start,
     required DateTime end,
@@ -1542,7 +1544,9 @@ class Health {
       'title': title,
       'recordingMethod': recordingMethod.toInt(),
     };
-    return await _channel.invokeMethod('writeWorkoutData', args) == true;
+    final result = await _channel.invokeMethod('writeWorkoutData', args);
+    if (result == null || result == false) return null;
+    return '$result';
   }
 
   /// Start a new workout route recording session on iOS or Android.

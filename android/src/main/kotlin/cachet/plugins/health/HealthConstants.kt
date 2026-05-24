@@ -30,6 +30,7 @@ object HealthConstants {
     const val HEART_RATE_VARIABILITY_RMSSD = "HEART_RATE_VARIABILITY_RMSSD"
     const val HEIGHT = "HEIGHT"
     const val MENSTRUATION_FLOW = "MENSTRUATION_FLOW"
+    const val MINDFULNESS = "MINDFULNESS"
     const val RESPIRATORY_RATE = "RESPIRATORY_RATE"
     const val RESTING_HEART_RATE = "RESTING_HEART_RATE"
     const val STEPS = "STEPS"
@@ -39,6 +40,7 @@ object HealthConstants {
     const val SPEED = "SPEED"
     const val ACTIVITY_INTENSITY = "ACTIVITY_INTENSITY"
     const val SKIN_TEMPERATURE = "SKIN_TEMPERATURE"
+    const val VO2_MAX = "VO2_MAX"
 
     // Meal types
     const val BREAKFAST = "BREAKFAST"
@@ -105,9 +107,11 @@ object HealthConstants {
         RESPIRATORY_RATE to RespiratoryRateRecord::class,
         TOTAL_CALORIES_BURNED to TotalCaloriesBurnedRecord::class,
         MENSTRUATION_FLOW to MenstruationFlowRecord::class,
+        MINDFULNESS to MindfulnessSessionRecord::class,
         SPEED to SpeedRecord::class,
         ACTIVITY_INTENSITY to ActivityIntensityRecord::class,
         SKIN_TEMPERATURE to SkinTemperatureRecord::class,
+        VO2_MAX to Vo2MaxRecord::class,
     )
     
     /**

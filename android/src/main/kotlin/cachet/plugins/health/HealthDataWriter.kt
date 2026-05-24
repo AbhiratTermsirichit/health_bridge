@@ -835,6 +835,17 @@ class HealthDataWriter(
                             zoneOffset = null,
                             metadata = metadata,
                     )
+            MINDFULNESS ->
+                    MindfulnessSessionRecord(
+                            startTime = Instant.ofEpochMilli(startTime),
+                            endTime = Instant.ofEpochMilli(endTime),
+                            startZoneOffset = null,
+                            endZoneOffset = null,
+                            mindfulnessSessionType = MindfulnessSessionRecord.MINDFULNESS_SESSION_TYPE_MEDITATION,
+                            metadata = metadata,
+                            title = "",
+                            notes = "",
+                    )
             SPEED ->
                     SpeedRecord(
                             startTime = Instant.ofEpochMilli(startTime),
@@ -870,6 +881,13 @@ class HealthDataWriter(
                                 Log.e("FLUTTER_HEALTH::ERROR", "You must use the [writeActivityIntensity] API")
                                 null
                         }
+            VO2_MAX ->
+                    Vo2MaxRecord(
+                            time = Instant.ofEpochMilli(startTime),
+                            vo2MillilitersPerMinuteKilogram = value,
+                            zoneOffset = null,
+                            metadata = metadata,
+                    )
             else -> {
                 Log.e(
                         "FLUTTER_HEALTH::ERROR",
@@ -936,12 +954,14 @@ class HealthDataWriter(
         private const val RESPIRATORY_RATE = "RESPIRATORY_RATE"
         private const val TOTAL_CALORIES_BURNED = "TOTAL_CALORIES_BURNED"
         private const val MENSTRUATION_FLOW = "MENSTRUATION_FLOW"
+        private const val MINDFULNESS = "MINDFULNESS"
         private const val BLOOD_PRESSURE_SYSTOLIC = "BLOOD_PRESSURE_SYSTOLIC"
         private const val BLOOD_PRESSURE_DIASTOLIC = "BLOOD_PRESSURE_DIASTOLIC"
         private const val WORKOUT = "WORKOUT"
         private const val NUTRITION = "NUTRITION"
         private const val SPEED = "SPEED"
         private const val ACTIVITY_INTENSITY = "ACTIVITY_INTENSITY"
+        private const val VO2_MAX = "VO2_MAX"
 
         // Recording method mapping expected from Flutter side
         private const val RECORDING_METHOD_UNKNOWN = 0
