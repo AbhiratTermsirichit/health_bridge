@@ -1,21 +1,21 @@
 // swift-tools-version: 5.9
-// The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
 
 let package = Package(
-    name: "health",
+    name: "health_bridge",
     platforms: [
         .iOS("14.0")
     ],
     products: [
-        .library(name: "health", targets: ["health"])
+        .library(name: "health-bridge", targets: ["health_bridge"])
     ],
     dependencies: [],
     targets: [
         .target(
-            name: "health",
+            name: "health_bridge",
             dependencies: [],
+            path: "Sources/health",
             linkerSettings: [
                 .linkedFramework("HealthKit")
             ]
