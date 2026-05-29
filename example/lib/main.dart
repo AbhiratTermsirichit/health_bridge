@@ -444,34 +444,34 @@ class HealthAppState extends State<HealthApp> {
     bool success = true;
 
     // misc. health data examples using the writeHealthData() method
-    success &= await health.writeHealthData(
+    success &= null != await health.writeHealthData(
       value: 1.925,
       type: HealthDataType.HEIGHT,
       startTime: earlier,
       endTime: now,
       recordingMethod: RecordingMethod.manual,
     );
-    success &= await health.writeHealthData(
+    success &= null != await health.writeHealthData(
       value: 90,
       type: HealthDataType.WEIGHT,
       startTime: now,
       recordingMethod: RecordingMethod.manual,
     );
-    success &= await health.writeHealthData(
+    success &= null != await health.writeHealthData(
       value: 90,
       type: HealthDataType.HEART_RATE,
       startTime: earlier,
       endTime: now,
       recordingMethod: RecordingMethod.manual,
     );
-    success &= await health.writeHealthData(
+    success &= null != await health.writeHealthData(
       value: 90,
       type: HealthDataType.STEPS,
       startTime: earlier,
       endTime: now,
       recordingMethod: RecordingMethod.manual,
     );
-    success &= await health.writeHealthData(
+    success &= null != await health.writeHealthData(
       value: 200,
       type: HealthDataType.ACTIVE_ENERGY_BURNED,
       startTime: earlier,
@@ -479,25 +479,25 @@ class HealthAppState extends State<HealthApp> {
       clientRecordId: "uniqueID1234",
       clientRecordVersion: 1,
     );
-    success &= await health.writeHealthData(
+    success &= null != await health.writeHealthData(
       value: 70,
       type: HealthDataType.HEART_RATE,
       startTime: earlier,
       endTime: now,
     );
-    success &= await health.writeHealthData(
+    success &= null != await health.writeHealthData(
       value: 37,
       type: HealthDataType.BODY_TEMPERATURE,
       startTime: earlier,
       endTime: now,
     );
-    success &= await health.writeHealthData(
+    success &= null != await health.writeHealthData(
       value: 105,
       type: HealthDataType.BLOOD_GLUCOSE,
       startTime: earlier,
       endTime: now,
     );
-    success &= await health.writeHealthData(
+    success &= null != await health.writeHealthData(
       value: 1.8,
       type: HealthDataType.WATER,
       startTime: earlier,
@@ -505,26 +505,26 @@ class HealthAppState extends State<HealthApp> {
     );
 
     // different types of sleep
-    success &= await health.writeHealthData(
+    success &= null != await health.writeHealthData(
       value: 0.0,
       type: HealthDataType.SLEEP_ASLEEP,
       startTime: earlier,
       endTime: now,
     );
-    success &= await health.writeHealthData(
+    success &= null != await health.writeHealthData(
       value: 0.0,
       type: HealthDataType.SLEEP_AWAKE,
       startTime: earlier,
       endTime: now,
     );
     if (_isIOS16OrNewer || Platform.isAndroid) {
-      success &= await health.writeHealthData(
+      success &= null != await health.writeHealthData(
         value: 0.0,
         type: HealthDataType.SLEEP_REM,
         startTime: earlier,
         endTime: now,
       );
-      success &= await health.writeHealthData(
+      success &= null != await health.writeHealthData(
         value: 0.0,
         type: HealthDataType.SLEEP_DEEP,
         startTime: earlier,
@@ -533,7 +533,7 @@ class HealthAppState extends State<HealthApp> {
     } else if (Platform.isIOS) {
       debugPrint('Skipping SLEEP_REM and SLEEP_DEEP writes on iOS < 16.');
     }
-    success &= await health.writeHealthData(
+    success &= null != await health.writeHealthData(
       value: 22,
       type: HealthDataType.LEAN_BODY_MASS,
       startTime: earlier,
@@ -555,7 +555,7 @@ class HealthAppState extends State<HealthApp> {
       startTime: earlier,
       endTime: now,
     );
-    success &= await health.writeWorkoutData(
+    success &= null != await health.writeWorkoutData(
       activityType: HealthWorkoutActivityType.AMERICAN_FOOTBALL,
       title: "Random workout name that shows up in Health Connect",
       start: now.subtract(const Duration(minutes: 15)),
@@ -653,13 +653,13 @@ class HealthAppState extends State<HealthApp> {
         earlier,
         now,
       );
-      success &= await health.writeHealthData(
+      success &= null != await health.writeHealthData(
         value: 30,
         type: HealthDataType.HEART_RATE_VARIABILITY_SDNN,
         startTime: earlier,
         endTime: now,
       );
-      success &= await health.writeHealthData(
+      success &= null != await health.writeHealthData(
         value: 1.5, // 1.5 m/s (typical walking speed)
         type: HealthDataType.WALKING_SPEED,
         startTime: earlier,
@@ -667,14 +667,14 @@ class HealthAppState extends State<HealthApp> {
         recordingMethod: RecordingMethod.manual,
       );
     } else {
-      success &= await health.writeHealthData(
+      success &= null != await health.writeHealthData(
         value: 2.0, // 2.0 m/s (typical jogging speed)
         type: HealthDataType.SPEED,
         startTime: earlier,
         endTime: now,
         recordingMethod: RecordingMethod.manual,
       );
-      success &= await health.writeHealthData(
+      success &= null != await health.writeHealthData(
         value: 30,
         type: HealthDataType.HEART_RATE_VARIABILITY_RMSSD,
         startTime: earlier,
@@ -684,7 +684,7 @@ class HealthAppState extends State<HealthApp> {
 
     // Available on iOS 16.0+ only
     if (_isIOS16OrNewer) {
-      success &= await health.writeHealthData(
+      success &= null != await health.writeHealthData(
         value: 22,
         type: HealthDataType.WATER_TEMPERATURE,
         startTime: earlier,
@@ -692,14 +692,14 @@ class HealthAppState extends State<HealthApp> {
         recordingMethod: RecordingMethod.manual,
       );
 
-      success &= await health.writeHealthData(
+      success &= null != await health.writeHealthData(
         value: 55,
         type: HealthDataType.UNDERWATER_DEPTH,
         startTime: earlier,
         endTime: now,
         recordingMethod: RecordingMethod.manual,
       );
-      success &= await health.writeHealthData(
+      success &= null != await health.writeHealthData(
         value: 4.3,
         type: HealthDataType.UV_INDEX,
         startTime: earlier,
@@ -714,7 +714,7 @@ class HealthAppState extends State<HealthApp> {
 
     if (Platform.isIOS) {
       // Mindfulness value should be counted based on start and end time
-      success &= await health.writeHealthData(
+      success &= null != await health.writeHealthData(
         value: 10,
         type: HealthDataType.MINDFULNESS,
         startTime: earlier,

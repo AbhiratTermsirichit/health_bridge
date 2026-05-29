@@ -24,7 +24,7 @@ The plugin supports:
 - handling permissions to access health data using the `hasPermissions`, `requestAuthorization`, `revokePermissions` methods.
 - reading health data using the `getHealthDataFromTypes` method.
 - writing health data using the `writeHealthData` method.
-- writing workouts using the `writeWorkout` method.
+- writing workouts using the `writeWorkoutData` method.
 - writing workout routes on iOS and Android using the `startWorkoutRoute` / `insertWorkoutRouteData` / `finishWorkoutRoute` methods.
 - writing meals on iOS (Apple Health) & Android using the `writeMeal` method.
 - writing audiograms on iOS using the `writeAudiogram` method.
@@ -183,6 +183,7 @@ A instance of the Health plugin is create using the `Health()` constructor and i
 Below is a simplified flow of how to use the plugin.
 
 ```dart
+  import 'package:health_bridge/health.dart';
 
   // Global Health instance
   final health = Health();
@@ -204,7 +205,10 @@ Below is a simplified flow of how to use the plugin.
 
   // fetch health data from the last 24 hours
   List<HealthDataPoint> healthData = await health.getHealthDataFromTypes(
-     now.subtract(Duration(days: 1)), now, types);
+    types: types,
+    startTime: now.subtract(const Duration(days: 1)),
+    endTime: now,
+  );
 
   // request permissions to write steps and blood glucose
   types = [HealthDataType.STEPS, HealthDataType.BLOOD_GLUCOSE];
@@ -214,14 +218,23 @@ Below is a simplified flow of how to use the plugin.
   ];
   await health.requestAuthorization(types, permissions: permissions);
 
-  // write steps and blood glucose
-  bool success = await health.writeHealthData(10, HealthDataType.STEPS, now, now);
-  success = await health.writeHealthData(3.1, HealthDataType.BLOOD_GLUCOSE, now, now);
+  // write steps and blood glucose — these methods return the new record's
+  // String? UUID (null if the write failed), not a bool
+  String? stepsUuid = await health.writeHealthData(
+    value: 10, type: HealthDataType.STEPS, startTime: now, endTime: now);
+  String? glucoseUuid = await health.writeHealthData(
+    value: 3.1, type: HealthDataType.BLOOD_GLUCOSE, startTime: now, endTime: now);
 
   // you can also specify the recording method to store in the metadata (default is RecordingMethod.automatic)
   // on iOS only `RecordingMethod.automatic` and `RecordingMethod.manual` are supported
   // Android additionally supports `RecordingMethod.active` and `RecordingMethod.unknown`
-  success &= await health.writeHealthData(10, HealthDataType.STEPS, now, now, recordingMethod: RecordingMethod.manual);
+  await health.writeHealthData(
+    value: 10,
+    type: HealthDataType.STEPS,
+    startTime: now,
+    endTime: now,
+    recordingMethod: RecordingMethod.manual,
+  );
 
   // get the number of steps for today
   var midnight = DateTime(now.year, now.month, now.day);
@@ -248,7 +261,7 @@ Below is a simplified flow of how to use the plugin.
 
 ### Health Data
 
-A [`HealthDataPoint`](https://pub.dev/documentation/health/latest/health/HealthDataPoint-class.html) object contains the following data fields:
+A [`HealthDataPoint`](lib/src/health_data_point.dart) object contains the following data fields:
 
 ```dart
 String uuid;
@@ -265,25 +278,12 @@ RecordingMethod recordingMethod;
 WorkoutSummary? workoutSummary;
 ```
 
-where a [`HealthValue`](https://pub.dev/documentation/health/latest/health/HealthValue-class.html) can be any type of `AudiogramHealthValue`, `ElectrocardiogramHealthValue`, `ElectrocardiogramVoltageValue`, `NumericHealthValue`, `NutritionHealthValue`, or `WorkoutHealthValue`.
+where a [`HealthValue`](lib/src/health_value_types.dart) can be any type of `AudiogramHealthValue`, `ElectrocardiogramHealthValue`, `ElectrocardiogramVoltageValue`, `NumericHealthValue`, `NutritionHealthValue`, or `WorkoutHealthValue`.
 
 A `HealthDataPoint` object can be serialized to and from JSON using the `toJson()` and `fromJson()` methods. JSON serialization is using camel_case notation. Null values are not serialized. For example;
 
 ```json
 {
-  "value": {
-    "__type": "NumericHealthValue",
-    "numeric_value": 141.0
-  },
-  "type": "STEPS",
-  "unit": "COUNT",
-  "date_from": "2024-04-03T10:06:57.736",
-  "date_to": "2024-04-03T10:12:51.724",
-  "source_platform": "appleHealth",
-  "source_device_id": "F74938B9-C011-4DE4-AA5E-CF41B60B96E7",
-  "source_id": "com.apple.health.81AE7156-EC05-47E3-AC93-2D6F65C717DF",
-  "source_name": "iPhone12.bardram.net",
-  "recording_method": 3
   "value": {
     "__type": "NumericHealthValue",
     "numeric_value": 141.0
@@ -379,46 +379,9 @@ Furthermore, the plugin now exposes three new functions to help you check and re
 2. `isHealthDataInBackgroundAuthorized()`: Checks the current status of the Health Data in Background permission
 3. `requestHealthDataInBackgroundAuthorization()`: Requests the Health Data in Background permission.
 
-### Fetch single health data by UUID
-
-In order to retrieve a single record, it is required to provide `String uuid` and `HealthDataType type`.
-
-Please see example below:
-```dart
-HealthDataPoint? healthPoint = await health.getHealthDataByUUID(
-  uuid: 'E9F2EEAD-8FC5-4CE5-9FF5-7C4E535FB8B8',
-  type: HealthDataType.WORKOUT,
-);
-```
-```
-data by UUID: HealthDataPoint -
-    uuid: E9F2EEAD-8FC5-4CE5-9FF5-7C4E535FB8B8,
-    value: WorkoutHealthValue - workoutActivityType: RUNNING,
-           totalEnergyBurned: null,
-           totalEnergyBurnedUnit: KILOCALORIE,
-           totalDistance: 2400,
-           totalDistanceUnit: METER
-           totalSteps: null,
-           totalStepsUnit: null,
-    unit: NO_UNIT,
-    dateFrom: 2025-05-02 07:31:00.000,
-    dateTo: 2025-05-02 08:25:00.000,
-    dataType: WORKOUT,
-    platform: HealthPlatformType.appleHealth,
-    deviceId: unknown,
-    sourceId: com.apple.Health,
-    sourceName: Health
-    recordingMethod: RecordingMethod.manual
-    workoutSummary: WorkoutSummary - workoutType: runningtotalDistance: 2400, totalEnergyBurned: 0, totalSteps: 0
-    metadata: null
-    deviceModel: null
-```
-> Assuming that the `uuid` and `type` are coming from your database.
-
-
 ## Data Types
 
-The plugin supports the following [`HealthDataType`](https://pub.dev/documentation/health/latest/health/HealthDataType.html).
+The plugin supports the following [`HealthDataType`](lib/src/heath_data_types.dart).
 
 | **Data Type**                | **Unit**                | **Apple Health** | **Google Health Connect** | **Comments**                                                                                                                       |
 | ---------------------------- | ----------------------- | ---------------- | ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
@@ -485,11 +448,10 @@ The plugin supports the following [`HealthDataType`](https://pub.dev/documentati
 | WALKING_SPEED                | METER_PER_SECOND        | yes              | (yes)                     | On Android this will be recorded as `SPEED` with similar unit                                                                      |
 | APPLE_MOVE_TIME              | SECOND                  | yes              |                           | READ Only                                                                                                                          |
 | APPLE_STAND_HOUR             | HOUR                    | yes              |                           | READ Only                                                                                                                          |
-| APPLE_MOVE_TIME              | SECOND                  | yes              |                           | READ Only                                                                                                                          |
 
 ## Workout Types
 
-The plugin supports the following [`HealthWorkoutActivityType`](https://pub.dev/documentation/health/latest/health/HealthWorkoutActivityType.html).
+The plugin supports the following [`HealthWorkoutActivityType`](lib/src/heath_data_types.dart).
 
 | **Workout Type**                 | **Apple Health** | **Google Health Connect** | **Comments**                                                                                    |
 | -------------------------------- | ---------------- | ------------------------- | ----------------------------------------------------------------------------------------------- |
@@ -590,5 +552,5 @@ The plugin supports the following [`HealthWorkoutActivityType`](https://pub.dev/
 
 ## License
 
-This software is copyright (c) the [Technical University of Denmark (DTU)](https://www.dtu.dk) and is part of the [Copenhagen Research Platform](https://carp.cachet.dk/).
+`health_bridge` is a fork of the [`health`](https://github.com/carp-dk/carp-health-flutter) plugin, copyright (c) the [Technical University of Denmark (DTU)](https://www.dtu.dk) and part of the [Copenhagen Research Platform](https://carp.cachet.dk/). Fork modifications are copyright (c) Michael Ryan.
 This software is available 'as-is' under a [MIT license](LICENSE).
